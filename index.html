@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>Recognising Words</title>
+    <script src="https://unpkg.com/jspsych@7.0.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.0.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-audio-button-response@1.0.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-audio-keyboard-response@1.0.0"></script>
+    <!-- stylesheet -->
+    <link href="https://unpkg.com/jspsych@7.0.0/css/jspsych.css" rel="stylesheet" type="text/css" />  
+  </head>
+  <body>
+    <!-- experiment is rendered here -->
+  </body>
+  <script>
+    
+    const jsPsych = initJsPsych();
+
+    // DEMO
+
+    const hello_trial = {
+	type: jsPsychHtmlKeyboardResponse,
+	stimulus: 'Hello World!'
+    }
+
+    const context_audio = {
+	type: jsPsychAudioKeyboardResponse,
+	stimulus: "sound/DISFLUENT.wav",
+	choices: jsPsych.NO_KEYS,
+	trial_ends_after_audio: true,
+	data: {
+	    condition: 'DISFLUENT',
+	}
+    }
+
+    const stimulus_audio = {
+	type: jsPsychAudioButtonResponse,
+	stimulus: "sound/DT_F0_4_VOT_4.wav",
+	choices: ['DASTE', 'TASTE'],
+	data: {
+	    VOTdegree: 4,
+	}
+    }
+
+    const OneTrial = {
+	timeline: [context_audio, stimulus_audio]
+    }
+
+    
+    jsPsych.run([hello_trial,OneTrial]);
+    
+  </script>
+</html>
