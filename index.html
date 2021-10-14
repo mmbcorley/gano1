@@ -37,7 +37,7 @@
     const stimulus_audio = {
 	type: jsPsychAudioButtonResponse,
 	stimulus: "sound/DT_F0_4_VOT_4.wav",
-	choices: ['DASTE', 'TASTE'],
+	choices: jsPsych.randomization.repeat(['DASTE', 'TASTE'],1),
 	data: {
 	    VOTdegree: 4,
 	}
