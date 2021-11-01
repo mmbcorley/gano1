@@ -1,0 +1,100 @@
+Using Praat version 6.1
+Saving to parent folder /home/martinc/expt/MC/Ganong/gano1/sandbox/
+###############################################
+SOUND SELECTION INFO
+User selected GIFT as the voiced endpoint
+User selected KISS as the voiceless endpoint
+
+###############################################
+###############################################
+VOT CONTINUUM INFO
+
+###############################################
+User selections
+Selected an aspiration segment from KISS sound
+   with onset landmark at 0.02387497423211709
+   and offset landmark at 0.11185878747103238
+
+###############################################
+Marked 0.056492541538113165 as the vowel onset in the GIFT sound
+
+
+###############################################
+VOT steps 
+VOT_1	0.01 
+VOT_2	0.019 
+VOT_3	0.027 
+VOT_4	0.036 
+VOT_5	0.044 
+VOT_6	0.053 
+VOT_7	0.061 
+VOT_8	0.07 
+
+Added 0.05 silence at the onset of each sound
+Added 3 ms aspiration at the end for blending into the vowel
+
+Vowel-cutback information:
+For each 1 ms of VOT, 0.65 ms of vowel cutback
+(0.65 vowel-cutback ratio)
+Maximum vowel cutback actually used: 0.046
+Maximum vowel cutback duration permitted: 0.7 seconds
+
+
+###############################################
+Original sound F0 onset: 116.0
+F0 continuum minimum:  114.0
+F0 continuum maximum:  126.0
+Modification declared as relative change from the original
+
+###############################################
+F0 steps: 
+F0_1	114 
+F0_2	116 
+F0_3	117 
+F0_4	119 
+F0_5	121 
+F0_6	123 
+F0_7	124 
+F0_8	126 
+
+Pitch analysis between 65 and 275 Hz
+
+###############################################
+Aspiration intensities (dB)
+aspiration_int_1	62.4 
+aspiration_int_2	63.2 
+aspiration_int_3	64.1 
+aspiration_int_4	65 
+aspiration_int_5	65.8 
+aspiration_int_6	66.7 
+aspiration_int_7	67.5 
+aspiration_int_8	68.4 
+
+Aspiration change (dB)
+aspiration_int_change_1	-6 
+aspiration_int_change_2	-5.14 
+aspiration_int_change_3	-4.29 
+aspiration_int_change_4	-3.43 
+aspiration_int_change_5	-2.57 
+aspiration_int_change_6	-1.71 
+aspiration_int_change_7	-0.86 
+aspiration_int_change_8	0 
+
+
+###############################################
+Used 0.006 as the VOT cross-fade duration 
+
+###############################################
+Output sounds maintained natural intensity-VOT relationship
+(not equalized for RMS)
+
+###############################################
+Vowel onset intensitying ramping
+Step 1 half-ramped vowel onset intensity over the first 0.0007 s
+Step 2 half-ramped vowel onset intensity over the first 0.003 s
+Step 3 half-ramped vowel onset intensity over the first 0.006 s
+Step 4 half-ramped vowel onset intensity over the first 0.009 s
+Step 5 half-ramped vowel onset intensity over the first 0.012 s
+Step 6 half-ramped vowel onset intensity over the first 0.015 s
+Step 7 half-ramped vowel onset intensity over the first 0.017 s
+Step 8 half-ramped vowel onset intensity over the first 0.020 s
