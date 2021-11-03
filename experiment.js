@@ -12,15 +12,22 @@ const welcome = {
                   are in a quiet place, and wear headphones.</strong>
                   If you don't have headphones, earbuds or decent computer speakers would be helpful.</p>
                <p>Please decide on what you are going to use, and check that your sound is working properly,
-                  before continuing to the next page.</p>`
+                  before continuing to the next page.</p>`,
+	`<p>On the following page we will check that you can hear the audio for this experiment clearly.</p>
+         <p>Please follow the spoken instructions that you will hear to continue.</p>`
 	   ],
     show_clickable_nav: true   
 }
 
+/* provide a random array of choices for volume check */
+const volumeChoices = jsPsych.randomization.repeat(['T','H','X','Q','P','S','W','M'],1);
+const volumeIndex = volumeChoices.findIndex(letter => letter === 'Q');
+
 const adjust_volume = {
-    type: jsPsychAudioKeyboardResponse,
+    type: jsPsychAudioButtonResponse,
     stimulus: "sound/adjust_volume.wav",
-    choices: ['q'],
+    choices: volumeChoices,
+    margin_vertical: "12px",
     response_ends_trial: true,
     trial_ends_after_audio: true,
     response_allowed_while_playing: true,
@@ -30,13 +37,15 @@ const adjust_volume = {
 const check_audio = {
     timeline: [adjust_volume],
     loop_function: function(data){
-	if (jsPsych.pluginAPI.compareKeys(data.values()[0].response, 'q')){
+	if (data.values()[0].response==volumeIndex){
 	    return false;
 	} else {
 	    return true;
 	}
     }
 }
+
+
 
 
 const context_audio = {
