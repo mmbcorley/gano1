@@ -1,6 +1,35 @@
 const jsPsych = initJsPsych();
 
-// DEMO
+// function to save data (works in conjunction with write_data.php)
+function saveData(name, data){
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'write_data.php'); // 'write_data.php' is the path to the php file described above.
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({filename: name, filedata: data}));
+}
+
+// set up random ppt ID (15 char)
+const subject_id = jsPsych.randomization.randomID(15);
+const short_id = subject_id.substring(0,4); // for data protection
+
+// add the ID variables to the dataset
+jsPsych.data.addProperties({subject: subject_id,
+			    shortID: short_id});
+
+const full_screen =  {
+    type: jsPsychFullscreen,
+    message: `<p>"Q" pressed: Thank you.</p>
+              <p>We will now switch to fullscreen mode, after which
+              you will be able to read detailed instructions for the experiment.
+</p>`,
+    fullscreen_mode: true
+};
+
+const off_screen = {
+    type: jsPsychFullscreen,
+    fullscreen_mode: false
+};
+
 
 const welcome = {
     type: jsPsychInstructions,
@@ -22,6 +51,16 @@ const welcome = {
 /* provide a random array of choices for volume check */
 const volumeChoices = jsPsych.randomization.repeat(['T','H','X','Q','P','S','W','M'],1);
 const volumeIndex = volumeChoices.findIndex(letter => letter === 'Q');
+
+const designParts = {
+    phrase: ['DC1','DC2','DC3','DC4','FC1','FC2','FC3','FC4'],
+    target: ['GK1','GK2','GK3','GK4','GK5','GK6','GK7','GK8',
+	     'KG1','KG2','KG3','KG4','KG5','KG6','KG7','KG8']
+}
+
+const fullDesign = jsPsych.randomization.factorial(designParts,1);
+
+console.log(fullDesign);
 
 const adjust_volume = {
     type: jsPsychAudioButtonResponse,
@@ -68,7 +107,7 @@ const stimulus_audio = {
 }
 
 const OneTrial = {
-    timeline: [welcome, check_audio, context_audio, stimulus_audio]
+    timeline: [welcome, check_audio, full_screen, context_audio, stimulus_audio, off_screen]
 }
 
     
