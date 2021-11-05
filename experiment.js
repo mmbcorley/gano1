@@ -1,9 +1,14 @@
 const jsPsych = initJsPsych();
 
+// UTILITY FUNCTIONS AND SETUP
+// ===========================
+
 // function to save data (works in conjunction with write_data.php)
 function saveData(name, data){
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'write_data.php'); // 'write_data.php' is the path to the php file described above.
+    xhr.open('POST', 'write_data.php'); // 'write_data.php' is the
+					// path to the php file
+					// described above.
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({filename: name, filedata: data}));
 }
@@ -15,6 +20,17 @@ const short_id = subject_id.substring(0,4); // for data protection
 // add the ID variables to the dataset
 jsPsych.data.addProperties({subject: subject_id,
 			    shortID: short_id});
+
+// EXPERIMENTAL DESIGN
+// ===================
+
+const factors = {
+    phrase: ["DC1","DC2","DC3","DC4","FC1","FC2","FC3","FC4"],
+    target: ["GK1","GK2","GK3","GK4","GK5","GK6","GK7","GK8",
+	     "KG1","KG2","KG3","KG4","KG5","KG6","KG7","KG8"]
+}
+
+const fullDesign = jsPsych.randomization.factorial(factors,1);
 
 const full_screen =  {
     type: jsPsychFullscreen,
@@ -52,16 +68,6 @@ const welcome = {
 const volumeChoices = jsPsych.randomization.repeat(['T','H','X','Q','P','S','W','M'],1);
 const volumeIndex = volumeChoices.findIndex(letter => letter === 'Q');
 
-const designParts = {
-    phrase: ['DC1','DC2','DC3','DC4','FC1','FC2','FC3','FC4'],
-    target: ['GK1','GK2','GK3','GK4','GK5','GK6','GK7','GK8',
-	     'KG1','KG2','KG3','KG4','KG5','KG6','KG7','KG8']
-}
-
-const fullDesign = jsPsych.randomization.factorial(designParts,1);
-
-console.log(fullDesign);
-
 const adjust_volume = {
     type: jsPsychAudioButtonResponse,
     stimulus: "sound/adjust_volume.wav",
@@ -85,31 +91,61 @@ const check_audio = {
 }
 
 
-
-
 const context_audio = {
     type: jsPsychAudioKeyboardResponse,
-    stimulus: "sound/DC2.wav",
+    stimulus: function() {
+	let context=jsPsych.timelineVariable('phrase',true);
+	return("sound/" + context + ".wav");
+    },
     choices: jsPsych.NO_KEYS,
     trial_ends_after_audio: true,
-    data: {
-	condition: 'DISFLUENT',
-    }
 }
+
+// function context_stimulus(context){
+//     return("sound/" + context + ".wav");
+// }
+
+// const context_audio = {
+//     type: jsPsychAudioKeyboardResponse,
+//     stimulus: context_stimulus(jsPsych.timelineVariable('phrase',true)),
+//     choices: jsPsych.NO_KEYS,
+//     trial_ends_after_audio: true,
+// }
 
 const stimulus_audio = {
     type: jsPsychAudioButtonResponse,
-    stimulus: "sound/GK/GK_F0_7_VOT_7.wav",
-    choices: jsPsych.randomization.repeat(['GIFT', 'KIFT'],1),
+    stimulus: function(){
+	let target=jsPsych.timelineVariable('target',true);
+	let prefix=target.slice(0,2);
+	let vot=target.slice(2,3);
+	return("sound/" + prefix + "/" + prefix + "_F0_" + vot + "_VOT_" + vot + ".wav");
+    },
+    choices: function() {
+	let target=jsPsych.timelineVariable('target',true);
+	let prefix=target.slice(0,2);
+	var choices;
+	if (prefix === 'GK') {
+	    choices=['GIFT','KIFT'];
+	} else {
+	    choices=['GISS','KISS'];
+	}
+	return(choices);
+    },
     data: {
 	VOTdegree: 7,
     }
 }
 
-const OneTrial = {
-    timeline: [welcome, check_audio, full_screen, context_audio, stimulus_audio, off_screen]
+
+const one_trial = {
+    timeline: [context_audio, stimulus_audio],
+    timeline_variables: fullDesign
+}
+    
+const experiment = {
+    timeline: [welcome, check_audio, full_screen, one_trial, off_screen]
 }
 
     
-jsPsych.run([OneTrial]);
+jsPsych.run([experiment]);
  

@@ -1,8 +1,16 @@
 <?php
-$post_data = json_decode(file_get_contents('php://input'), true); 
-// the directory "data" must be writable by the server
-$name = "../../experiment_data/ttexpt/".$post_data['filename'].".csv"; 
-$data = $post_data['filedata'];
-// write the file to disk
-file_put_contents($name, $data);
+$json = file_get_contents('php://input');
+$obj = json_decode($json, true);
+$server_data = '/home/corleylabppls/experiment_data/gano1';
+$path = $server_data."/".$obj["filename"];
+if (substr(realpath(dirname($path)), 0, strlen($server_data))!=$server_data) {
+    error_log("attempt to write to bad path: ".$path);
+} else {
+    $outfile = fopen($path, "a");
+    fwrite(
+        $outfile,
+        sprintf($obj["filedata"])
+    );
+    fclose($outfile);
+}
 ?>
