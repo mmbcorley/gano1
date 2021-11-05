@@ -91,36 +91,40 @@ const check_audio = {
 }
 
 
-const context_audio = {
-    type: jsPsychAudioKeyboardResponse,
-    stimulus: function() {
-	let context=jsPsych.timelineVariable('phrase',true);
-	return("sound/" + context + ".wav");
-    },
-    choices: jsPsych.NO_KEYS,
-    trial_ends_after_audio: true,
-}
-
-// function context_stimulus(context){
-//     return("sound/" + context + ".wav");
-// }
-
 // const context_audio = {
 //     type: jsPsychAudioKeyboardResponse,
-//     stimulus: context_stimulus(jsPsych.timelineVariable('phrase',true)),
+//     stimulus: function() {
+// 	let context=jsPsych.timelineVariable('phrase',true);
+// 	return("sound/" + context + ".wav");
+//     },
 //     choices: jsPsych.NO_KEYS,
 //     trial_ends_after_audio: true,
 // }
 
+// These two functions are defined here so that they can be used for
+// preloading audio as well as for generating stimuli
+
+function context_stimulus(context){
+    return("sound/" + context + ".wav");
+}
+
+function target_stimulus(target){
+    let prefix=target.slice(0,2);
+    let vot=target.slice(2,3);
+    return("sound/" + prefix + "/" + prefix + "_F0_" + vot + "_VOT_" + vot + ".wav");
+}
+
+const context_audio = {
+    type: jsPsychAudioKeyboardResponse,
+    stimulus: () => context_stimulus(jsPsych.timelineVariable('phrase',true)),
+    choices: jsPsych.NO_KEYS,
+    trial_ends_after_audio: true,
+}
+
 const stimulus_audio = {
     type: jsPsychAudioButtonResponse,
-    stimulus: function(){
-	let target=jsPsych.timelineVariable('target',true);
-	let prefix=target.slice(0,2);
-	let vot=target.slice(2,3);
-	return("sound/" + prefix + "/" + prefix + "_F0_" + vot + "_VOT_" + vot + ".wav");
-    },
-    choices: function() {
+    stimulus: () => target_stimulus(jsPsych.timelineVariable('target',true)),
+    choices: () => {
 	let target=jsPsych.timelineVariable('target',true);
 	let prefix=target.slice(0,2);
 	var choices;
@@ -131,9 +135,6 @@ const stimulus_audio = {
 	}
 	return(choices);
     },
-    data: {
-	VOTdegree: 7,
-    }
 }
 
 
