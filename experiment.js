@@ -21,6 +21,34 @@ const short_id = subject_id.substring(0,4); // for data protection
 jsPsych.data.addProperties({subject: subject_id,
 			    shortID: short_id});
 
+
+// These two functions are defined here so that they can be used for
+// preloading audio as well as for generating stimuli
+
+function context_stimulus(context){
+    return("sound/" + context + ".wav");
+}
+
+function target_stimulus(target){
+    let prefix=target.slice(0,2);
+    let vot=target.slice(2,3);
+    return("sound/" + prefix + "/" + prefix + "_F0_" + vot + "_VOT_" + vot + ".wav");
+}
+
+
+function make_preload_list(){
+    let preload_list=[];
+    for (c of factors.phrase) {
+	let fn=context_stimulus(c);
+	preload_list.push(fn);
+    }
+    for (t of factors.target) {
+	let fn=target_stimulus(t);
+	preload_list.push(fn);
+    }
+    return (preload_list);
+}
+    
 // EXPERIMENTAL DESIGN
 // ===================
 
@@ -31,6 +59,14 @@ const factors = {
 }
 
 const fullDesign = jsPsych.randomization.factorial(factors,1);
+
+const preload = {
+    type: jsPsychPreload,
+    audio: () => make_preload_list(),
+    error_message: `<h2>Error</h2>
+                    <p>Can't find the resources for this experiment.</p>
+                    <p>Please report the error to <a href="mailto:Martin.Corley@ed.ac.uk">Martin.Corley@ed.ac.uk</a>.</p>`
+}
 
 const full_screen =  {
     type: jsPsychFullscreen,
@@ -101,19 +137,6 @@ const check_audio = {
 //     trial_ends_after_audio: true,
 // }
 
-// These two functions are defined here so that they can be used for
-// preloading audio as well as for generating stimuli
-
-function context_stimulus(context){
-    return("sound/" + context + ".wav");
-}
-
-function target_stimulus(target){
-    let prefix=target.slice(0,2);
-    let vot=target.slice(2,3);
-    return("sound/" + prefix + "/" + prefix + "_F0_" + vot + "_VOT_" + vot + ".wav");
-}
-
 const context_audio = {
     type: jsPsychAudioKeyboardResponse,
     stimulus: () => context_stimulus(jsPsych.timelineVariable('phrase',true)),
@@ -144,7 +167,7 @@ const one_trial = {
 }
     
 const experiment = {
-    timeline: [welcome, check_audio, full_screen, one_trial, off_screen]
+    timeline: [preload, welcome, check_audio, full_screen, one_trial, off_screen]
 }
 
     
