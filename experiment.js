@@ -52,6 +52,12 @@ function make_preload_list(){
 // EXPERIMENTAL DESIGN
 // ===================
 
+const practice = [
+	{ phrase: "FC1", target: "GK1" },
+	{ phrase: "FC3", target: "KG4" }
+];
+
+
 const factors = {
     phrase: ["DC1","DC2","DC3","DC4","FC1","FC2","FC3","FC4"],
     target: ["GK1","GK2","GK3","GK4","GK5","GK6","GK7","GK8",
@@ -60,17 +66,34 @@ const factors = {
 
 const fullDesign = jsPsych.randomization.factorial(factors,1);
 
+console.log(fullDesign);
+console.log(practice);
+
 const preload = {
     type: jsPsychPreload,
     audio: () => make_preload_list(),
-    error_message: `<h2>Error</h2>
+    error_message: `<h1>Error</h1>
                     <p>Can't find the resources for this experiment.</p>
-                    <p>Please report the error to <a href="mailto:Martin.Corley@ed.ac.uk">Martin.Corley@ed.ac.uk</a>.</p>`
+                    <p>Please report this error to <a href="mailto:Martin.Corley@ed.ac.uk">Martin.Corley@ed.ac.uk</a>.</p>`
+}
+
+const get_device = {
+    type: jsPsychSurveyMultiChoice,
+    preamble: `<p>Thanks for pressing "Q".</p><p>One quick question which may help us analyse the data:</p>`,
+    questions: [
+	{
+	    prompt: "How are you listening to audio?",
+	    name: "audio_check",
+	    options: ['Headphones', 'Earbuds', 'Speakers'],
+	    required: true,
+	    horizontal: true
+	}
+    ]
 }
 
 const full_screen =  {
     type: jsPsychFullscreen,
-    message: `<p>"Q" pressed: Thank you.</p>
+    message: `<p>Thank you.</p>
               <p>We will now switch to fullscreen mode, after which
               you will be able to read detailed instructions for the experiment.
 </p>`,
@@ -126,16 +149,31 @@ const check_audio = {
     }
 }
 
+const instructions1 = {
+    type: jsPsychInstructions,
+    pages: [
+	    `<h1>Instructions</h1>
+             <p>This is a very simple experiment:  It involves listening to some words, and telling us what you hear.</p>
+             <p>You might hear something like</p>
+             <div style="align: center; padding-above: 10px; padding-below: 10px; font-size: 36px; color: orange">the next word is dest</div>
+             <p>and then get asked whether you heard 'DEST' or 'TEST'</p>`,
+	`<p>You'll see two buttons; just click on what you think you heard.</p><p>We're not trying to trick you, so if you're not sure, give it your best guess.</p>`,
+	    `<p>We'll start with a practice just so you know how everything works.</p><p>Click 'Next' when you're ready to listen to your first word.</p>`
+	   ],
+    show_clickable_nav: true   
+}
 
-// const context_audio = {
-//     type: jsPsychAudioKeyboardResponse,
-//     stimulus: function() {
-// 	let context=jsPsych.timelineVariable('phrase',true);
-// 	return("sound/" + context + ".wav");
-//     },
-//     choices: jsPsych.NO_KEYS,
-//     trial_ends_after_audio: true,
-// }
+const instructions2 = {
+    type: jsPsychInstructions,
+    pages: [
+	    `<h2>End of Practice</h2>
+             <p>Simple, eh?  Now you know how everything works, we'll rattle through the experiment.</p>
+             <p>Remember:  We're not trying to trick you!</p>
+             <p>There are quite a few words to listen to (we need them for the data analysis) so please stick with it</p>
+             <p style="color: orange"><strong>NB.</strong>To claim you course credit, look for the big orange button at the end of the experiment.</p>`
+    ],
+    show_clickable_nav: true   
+}
 
 const context_audio = {
     type: jsPsychAudioKeyboardResponse,
@@ -153,21 +191,28 @@ const stimulus_audio = {
 	var choices;
 	if (prefix === 'GK') {
 	    choices=['GIFT','KIFT'];
-	} else {
+	} else if (prefix === 'KG') {
 	    choices=['GISS','KISS'];
+	} else {
+	    choices=['TEST','DEST'];
 	}
 	return(choices);
     },
 }
 
+const prac_trials = {
+    timeline: [context_audio, stimulus_audio],
+    timeline_variables: practice
+}   
 
-const one_trial = {
+
+const exp_trials = {
     timeline: [context_audio, stimulus_audio],
     timeline_variables: fullDesign
 }
     
 const experiment = {
-    timeline: [preload, welcome, check_audio, full_screen, one_trial, off_screen]
+    timeline: [preload, welcome, check_audio, get_device, full_screen, instructions1,prac_trials,instructions2,exp_trials,off_screen]
 }
 
     
