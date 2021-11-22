@@ -1,6 +1,3 @@
-// pick up sona ID
-const sona_id = jsPsych.data.urlVariables()['sona_id'];
-
 const jsPsych = initJsPsych({
     show_progress_bar: true,
     auto_update_progress_bar: false,
@@ -8,6 +5,10 @@ const jsPsych = initJsPsych({
 	window.location.assign("https://universityofedinburgh-ppls.sona-systems.com/webstudy_credit.aspx?experiment_id=643&credit_token=2cf60d81805d455c9e65772ee1fecd5d&survey_code="+sona_id);
     }
 });
+
+// pick up sona ID
+const sona_id = jsPsych.data.urlVariables()['sona_id'];
+
 
 // CONSENT
 // =======
