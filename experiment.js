@@ -305,7 +305,7 @@ const debrief = {
 };
 
 const experiment = {
-    timeline: [preload, welcome, check_audio, get_device, full_screen, instructions1,prac_trials,instructions2,exp_trials,instructions3,qp1,save_data,off_screen,debrief]
+    timeline: [preload,consent,welcome, check_audio, get_device, full_screen, instructions1,prac_trials,instructions2,exp_trials,instructions3,qp1,save_data,off_screen,debrief]
 }
 
   
