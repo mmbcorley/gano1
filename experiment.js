@@ -80,8 +80,8 @@ function make_preload_list(){
 // ===================
 
 const practice = [
-	{ phrase: "FC1", target: "GK1" },
-	{ phrase: "FC3", target: "KG4" }
+	{ phrase: "FC1", target: "DT1" },
+	{ phrase: "FC3", target: "DT8" }
 ];
 
 

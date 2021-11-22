@@ -1,5 +1,5 @@
-Using Praat version 6.1
-Saving to parent folder /home/martinc/expt/MC/Ganong/gano1/sandbox/
+Using Praat version 6.2
+Saving to parent folder /home/martinc/expt/MC/Ganong/sandbox2/sounds
 ###############################################
 SOUND SELECTION INFO
 User selected GISS as the voiced endpoint
@@ -12,23 +12,28 @@ VOT CONTINUUM INFO
 ###############################################
 User selections
 Selected an aspiration segment from KISS sound
-   with onset landmark at 0.02140103660511824
-   and offset landmark at 0.11185878747103238
+   with onset landmark at 0.011984126984126984
+   and offset landmark at 0.097938156172895
 
 ###############################################
-Marked 0.05474292875044755 as the vowel onset in the GISS sound
+Replicating the last 0.018 at the end of the aspiration segment
+   to support the maximum length of the VOT continuum
+
+
+###############################################
+Marked 0.05352915846942726 as the vowel onset in the GISS sound
 
 
 ###############################################
 VOT steps 
 VOT_1	0.01 
-VOT_2	0.019 
-VOT_3	0.027 
-VOT_4	0.036 
-VOT_5	0.044 
-VOT_6	0.053 
-VOT_7	0.061 
-VOT_8	0.07 
+VOT_2	0.023 
+VOT_3	0.035 
+VOT_4	0.048 
+VOT_5	0.06 
+VOT_6	0.073 
+VOT_7	0.085 
+VOT_8	0.098 
 
 Added 0.05 silence at the onset of each sound
 Added 3 ms aspiration at the end for blending into the vowel
@@ -36,39 +41,39 @@ Added 3 ms aspiration at the end for blending into the vowel
 Vowel-cutback information:
 For each 1 ms of VOT, 0.65 ms of vowel cutback
 (0.65 vowel-cutback ratio)
-Maximum vowel cutback actually used: 0.046
+Maximum vowel cutback actually used: 0.064
 Maximum vowel cutback duration permitted: 0.7 seconds
 
 
 ###############################################
-Original sound F0 onset: 115.9
-F0 continuum minimum:  113.9
-F0 continuum maximum:  125.9
+Original sound F0 onset: 80.8
+F0 continuum minimum:  78.8
+F0 continuum maximum:  90.8
 Modification declared as relative change from the original
 
 ###############################################
 F0 steps: 
-F0_1	114 
-F0_2	116 
-F0_3	117 
-F0_4	119 
-F0_5	121 
-F0_6	122 
-F0_7	124 
-F0_8	126 
+F0_1	79 
+F0_2	81 
+F0_3	82 
+F0_4	84 
+F0_5	86 
+F0_6	87 
+F0_7	89 
+F0_8	91 
 
 Pitch analysis between 65 and 275 Hz
 
 ###############################################
 Aspiration intensities (dB)
-aspiration_int_1	62.3 
-aspiration_int_2	63.1 
-aspiration_int_3	64 
-aspiration_int_4	64.8 
-aspiration_int_5	65.7 
-aspiration_int_6	66.6 
-aspiration_int_7	67.4 
-aspiration_int_8	68.3 
+aspiration_int_1	61.2 
+aspiration_int_2	62 
+aspiration_int_3	62.9 
+aspiration_int_4	63.8 
+aspiration_int_5	64.6 
+aspiration_int_6	65.5 
+aspiration_int_7	66.3 
+aspiration_int_8	67.2 
 
 Aspiration change (dB)
 aspiration_int_change_1	-6 
@@ -91,10 +96,10 @@ Output sounds maintained natural intensity-VOT relationship
 ###############################################
 Vowel onset intensitying ramping
 Step 1 half-ramped vowel onset intensity over the first 0.0007 s
-Step 2 half-ramped vowel onset intensity over the first 0.003 s
-Step 3 half-ramped vowel onset intensity over the first 0.006 s
-Step 4 half-ramped vowel onset intensity over the first 0.009 s
-Step 5 half-ramped vowel onset intensity over the first 0.012 s
-Step 6 half-ramped vowel onset intensity over the first 0.015 s
-Step 7 half-ramped vowel onset intensity over the first 0.017 s
-Step 8 half-ramped vowel onset intensity over the first 0.020 s
+Step 2 half-ramped vowel onset intensity over the first 0.005 s
+Step 3 half-ramped vowel onset intensity over the first 0.009 s
+Step 4 half-ramped vowel onset intensity over the first 0.013 s
+Step 5 half-ramped vowel onset intensity over the first 0.017 s
+Step 6 half-ramped vowel onset intensity over the first 0.021 s
+Step 7 half-ramped vowel onset intensity over the first 0.025 s
+Step 8 half-ramped vowel onset intensity over the first 0.029 s
