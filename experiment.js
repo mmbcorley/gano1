@@ -1,7 +1,13 @@
 const jsPsych = initJsPsych({
     show_progress_bar: true,
-    auto_update_progress_bar: false
+    auto_update_progress_bar: false,
+    on_finish: function() {
+	window.location.assign("https://universityofedinburgh-ppls.sona-systems.com/webstudy_credit.aspx?experiment_id=636&credit_token=06b3b5174b44441dbcbf35e29d910669&survey_code="+sona_id);
+    }
 });
+
+// pick up sona ID
+const sona_id = jsPsych.data.urlVariables()['sona_id'];
 
 // CONSENT
 // =======
@@ -46,7 +52,9 @@ const short_id = subject_id.substring(0,4); // for data protection
 
 // add the ID variables to the dataset
 jsPsych.data.addProperties({subject: subject_id,
-			    shortID: short_id});
+			    shortID: short_id,
+			    SONA: sona_id
+			   });
 
 
 // These two functions are defined here so that they can be used for
@@ -143,7 +151,8 @@ const off_screen = {
 
 const welcome = {
     type: jsPsychInstructions,
-    pages: [
+    pages: [`<h1>Important</h1>
+             <p>To claim your course credit for this experiment, click on the <span style="color:orange">orange button</span> on the final screen.</p>`,
 	    `<h1>Welcome</h1>
                <div align='center'><img src='img/listen.svg' alt="icons representing headphones, earbuds, and a loudspeaker"/></div>
                <p>In this experiment you will be asked to make judgements about the words that you hear.
