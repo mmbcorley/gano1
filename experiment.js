@@ -1,4 +1,31 @@
-const jsPsych = initJsPsych();
+const jsPsych = initJsPsych({
+    show_progress_bar: true,
+    auto_update_progress_bar: false
+});
+
+// CONSENT
+// =======
+
+// consent form (uses approach on
+// https://www.jspsych.org/plugins/jspsych-external-html/)
+const check_consent = function(elem) {
+    if (document.getElementById('consent_checkbox').checked) {
+	return true;
+    } else {
+	alert("If you wish to participate, you must check the box next to the statement 'I agree to participate in this study.'");
+	return false;
+    }
+    return false;
+};
+
+const consent = {
+    type: jsPsychExternalHtml,
+    url: 'consent.html',
+    cont_btn: 'start',
+    check_fn: check_consent
+};
+
+
 
 // UTILITY FUNCTIONS AND SETUP
 // ===========================
@@ -58,16 +85,21 @@ const practice = [
 ];
 
 
+// const factors = {
+//     phrase: ["DC1","DC2","DC3","DC4","FC1","FC2","FC3","FC4"],
+//     target: ["GK1","GK2","GK3","GK4","GK5","GK6","GK7","GK8",
+// 	     "KG1","KG2","KG3","KG4","KG5","KG6","KG7","KG8"]
+// }
+
 const factors = {
-    phrase: ["DC1","DC2","DC3","DC4","FC1","FC2","FC3","FC4"],
-    target: ["GK1","GK2","GK3","GK4","GK5","GK6","GK7","GK8",
-	     "KG1","KG2","KG3","KG4","KG5","KG6","KG7","KG8"]
-}
+     phrase: ["DC1","FC1",],
+     target: ["GK3","GK7",
+	     "KG4","KG5"]
+ }
 
 const fullDesign = jsPsych.randomization.factorial(factors,1);
 
-console.log(fullDesign);
-console.log(practice);
+const exp_length = fullDesign.length + practice.length + 3;
 
 const preload = {
     type: jsPsychPreload,
@@ -83,7 +115,7 @@ const get_device = {
     questions: [
 	{
 	    prompt: "How are you listening to audio?",
-	    name: "audio_check",
+	    name: "audio_device",
 	    options: ['Headphones', 'Earbuds', 'Speakers'],
 	    required: true,
 	    horizontal: true
@@ -97,7 +129,10 @@ const full_screen =  {
               <p>We will now switch to fullscreen mode, after which
               you will be able to read detailed instructions for the experiment.
 </p>`,
-    fullscreen_mode: true
+    fullscreen_mode: true,
+    on_finish: () => {
+	jsPsych.setProgressBar(2/exp_length);
+    }
 };
 
 const off_screen = {
@@ -120,7 +155,10 @@ const welcome = {
 	`<p>On the following page we will check that you can hear the audio for this experiment clearly.</p>
          <p>Please follow the spoken instructions that you will hear to continue.</p>`
 	   ],
-    show_clickable_nav: true   
+    show_clickable_nav: true,
+    on_start: () => {
+	jsPsych.setProgressBar(0);
+    }
 }
 
 /* provide a random array of choices for volume check */
@@ -169,11 +207,47 @@ const instructions2 = {
 	    `<h2>End of Practice</h2>
              <p>Simple, eh?  Now you know how everything works, we'll rattle through the experiment.</p>
              <p>Remember:  We're not trying to trick you!</p>
-             <p>There are quite a few words to listen to (we need them for the data analysis) so please stick with it</p>
-             <p style="color: orange"><strong>NB.</strong>To claim you course credit, look for the big orange button at the end of the experiment.</p>`
+             <p>There are quite a few words to listen to (we need them for the data analysis) so please stick with it.</p>`
     ],
     show_clickable_nav: true   
 }
+
+const instructions3 = {
+    type: jsPsychInstructions,
+    pages: [
+	`<h2>Nearly Finished</h2>
+         <p>That's the main part of the experiment finished.</p>
+         <p>Next, we'd like you to answer a couple of questions about yourself.</p>`
+    ],
+    show_clickable_nav: true
+}
+
+const qp1 = {
+	type: jsPsychSurveyText,
+	preamble: '<h2>About You</h2>',
+	questions: [
+	    {prompt: 'What is your age in years?&nbsp;*',
+	     columns: 3,
+	     required: true,
+	     name: 'subject_age',
+	    },
+	    {prompt: 'Which country do you normally live in?&nbsp;*',
+	     required: true,
+	     name: 'subject_country',
+	    },
+	    {prompt: 'What is/are the languages you first spoke?&nbsp;*',
+	     required: true,
+	     name: 'subject_native_lang',
+	    },
+	    {prompt: 'Please list any other languages you speak fluently',
+	     name: 'subject_other_lang',
+	    },
+	    {prompt: 'What is your gender (e.g., male, female, nonbinary)?',
+	     name: 'subject_gender',
+	    }
+	]
+};
+
 
 const context_audio = {
     type: jsPsychAudioKeyboardResponse,
@@ -198,6 +272,10 @@ const stimulus_audio = {
 	}
 	return(choices);
     },
+    on_finish: () => {
+	let current_pbar = jsPsych.getProgressBarCompleted();
+	jsPsych.setProgressBar(current_pbar + 1/exp_length);
+    }
 }
 
 const prac_trials = {
@@ -210,11 +288,26 @@ const exp_trials = {
     timeline: [context_audio, stimulus_audio],
     timeline_variables: fullDesign
 }
-    
-const experiment = {
-    timeline: [preload, welcome, check_audio, get_device, full_screen, instructions1,prac_trials,instructions2,exp_trials,off_screen]
+
+const save_data = {
+    type: jsPsychCallFunction,
+    func: function()
+    {
+	saveData("DATA_".concat(subject_id),jsPsych.data.get().csv())
+    }
 }
 
-    
+const debrief = {
+    type: jsPsycjhHtmlButtonResponse,
+    choices: ['CLICK TO CLAIM COURSE CREDIT'],
+    button_html: `<button style="display: inline-block; padding: 6px 12px; margin: 0px; font-weight: 400; font-family: 'Open Sans', 'Arial', sans-serif; cursor: pointer; line-height: 1.4; text-align: center; white-space: nowrap; vertical-align: middle; background-image: none; border: 1px solid transparent; border-radius: 4px; background-color:orange; color:white; font-size:24px">%choice%</button>`,
+    stimulus: '<h2>The experiment has now concluded.</h2><p>This experiment was all about attention and speaker disfluency (<em>um</em>s and <em>er</em>s). We believe that when a speaker is disfluent, listeners automatically pay more attention to what they are saying (perhaps because they know something\'s "gone wrong".  In this experiment, that means that as a listner you should have been less likely to accept some of the carefully-manipulated words (like "giss") as a real word ("kiss") when the speaker was being disfluent.</p><p>We\'ll report our findings at <a href="https://osf.io/umswg/">osf.io/umswg/</a>.</p><p>Thanks for your help! If you know anyone else who\'s taking part, we\'d appreciate it if you didn\'t explain the purpose to them before they\'ve done the experiment, as it might affect the results.</p><p>If you have any questions, please contact <a href="mailto:Martin.Corley@ed.ac.uk?subject=Disfluency%20Experiment '+short_id+'">Martin Corley.</a></p>'
+};
+
+const experiment = {
+    timeline: [preload, welcome, check_audio, get_device, full_screen, instructions1,prac_trials,instructions2,exp_trials,instructions3,qp1,save_data,off_screen,debrief]
+}
+
+  
 jsPsych.run([experiment]);
  
