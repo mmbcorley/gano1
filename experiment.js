@@ -94,17 +94,18 @@ const practice = [
 ];
 
 
-// const factors = {
-//     phrase: ["DC1","DC2","DC3","DC4","FC1","FC2","FC3","FC4"],
-//     target: ["GK1","GK2","GK3","GK4","GK5","GK6","GK7","GK8",
-// 	     "KG1","KG2","KG3","KG4","KG5","KG6","KG7","KG8"]
-// }
-
 const factors = {
-     phrase: ["DC1","FC1",],
-     target: ["GK3","GK7",
-	     "KG4","KG5"]
- }
+    phrase: ["DC1","DC2","DC3","DC4","FC1","FC2","FC3","FC4"],
+    target: ["GK1","GK2","GK3","GK4","GK5","GK6","GK7","GK8",
+ 	     "KG1","KG2","KG3","KG4","KG5","KG6","KG7","KG8"]
+}
+
+// for testing
+// const factors = {
+//     phrase: ["DC1","FC1",],
+//     target: ["GK3","GK7",
+//	     "KG4","KG5"]
+// }
 
 const fullDesign = jsPsych.randomization.factorial(factors,1);
 
