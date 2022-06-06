@@ -95,7 +95,7 @@ const practice = [
 
 
 const factors = {
-    phrase: ["DC1","DC2","DC3","DC4","FC1","FC2","FC3","FC4"],
+    phrase: ["SC1","SC2","SC3","SC4","FC1","FC2","FC3","FC4"],
     target: ["GK1","GK2","GK3","GK4","GK5","GK6","GK7","GK8",
  	     "KG1","KG2","KG3","KG4","KG5","KG6","KG7","KG8"]
 }
