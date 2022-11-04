@@ -60,7 +60,6 @@ jsPsych.data.addProperties({subject: subject_id,
 			    session_id: session_id,
 			    study_id: study_id,
 			    shortID: short_id,
-			    SONA: sona_id
 			   });
 
 
