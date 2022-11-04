@@ -6,8 +6,12 @@ const jsPsych = initJsPsych({
     }
 });
 
-// pick up sona ID
-const sona_id = jsPsych.data.urlVariables()['sona_id'];
+// pick up PROLIFIC INFO
+//const sona_id = jsPsych.data.urlVariables()['sona_id'];
+const subject_id = jsPsych.data.getURLVariable('PROLIFIC_PID');
+const study_id = jsPsych.data.getURLVariable('STUDY_ID');
+const session_id = jsPsych.data.getURLVariable('SESSION_ID');
+
 
 
 // CONSENT
@@ -48,11 +52,13 @@ function saveData(name, data){
 }
 
 // set up random ppt ID (15 char)
-const subject_id = jsPsych.randomization.randomID(15);
-const short_id = subject_id.substring(0,4); // for data protection
+//const subject_id = jsPsych.randomization.randomID(15);
+const short_id = jsPsych.randomization.randomID(4);
 
 // add the ID variables to the dataset
 jsPsych.data.addProperties({subject: subject_id,
+			    session_id: session_id,
+			    study_id: study_id,
 			    shortID: short_id,
 			    SONA: sona_id
 			   });
@@ -154,7 +160,8 @@ const off_screen = {
 const welcome = {
     type: jsPsychInstructions,
     pages: [`<h1>Important</h1>
-             <p>To claim your course credit for this experiment, click on the <span style="color:orange">orange button</span> on the final screen.</p>`,
+             <p>To claim credit for this experiment, click on the <span style="color:orange">orange button</span> on the final screen.</p>
+             <p>Please note down the ID `+short_id+` which you can use to correspond with us about the experiment`,
 	    `<h1>Welcome</h1>
                <div align='center'><img src='img/listen.svg' alt="icons representing headphones, earbuds, and a loudspeaker"/></div>
                <p>In this experiment you will be asked to make judgements about the words that you hear.
@@ -310,9 +317,9 @@ const save_data = {
 
 const debrief = {
     type: jsPsychHtmlButtonResponse,
-    choices: ['CLICK TO CLAIM COURSE CREDIT'],
+    choices: ['CLICK TO RETURN TO PROLIFIC AND COMPLETE STUDY'],
     button_html: `<button style="display: inline-block; padding: 6px 12px; margin: 0px; font-weight: 400; font-family: 'Open Sans', 'Arial', sans-serif; cursor: pointer; line-height: 1.4; text-align: center; white-space: nowrap; vertical-align: middle; background-image: none; border: 1px solid transparent; border-radius: 4px; background-color:orange; color:white; font-size:24px">%choice%</button>`,
-    stimulus: '<h2>The experiment has now concluded.</h2><p>This experiment was all about attention and speaker disfluency (<em>um</em>s and <em>er</em>s). We believe that when a speaker is disfluent, listeners automatically pay more attention to what they are saying (perhaps because they know something\'s "gone wrong").  In this experiment, that means that as a listner you should have been less likely to accept some of the carefully-manipulated words (like "giss") as a real word ("kiss") when the speaker was being disfluent.</p><p>We\'ll report our findings at <a href="https://osf.io/rvp48/">osf.io/rvp48/</a>.</p><p>Thanks for your help! If you know anyone else who\'s taking part, we\'d appreciate it if you didn\'t explain the purpose to them before they\'ve done the experiment, as it might affect the results.</p><p>If you have any questions, please contact <a href="mailto:Martin.Corley@ed.ac.uk?subject=Disfluency%20Experiment '+short_id+'">Martin Corley.</a></p>',
+    stimulus: '<h2>The experiment has now concluded.</h2><p>This experiment was all about attention and speaker disfluency ("uncomfortable pauses"). We believe that when a speaker is disfluent, listeners automatically pay more attention to what they are saying (perhaps because they know something\'s "gone wrong").  In this experiment, that means that as a listner you should have been less likely to accept some of the carefully-manipulated words (like "giss") as a real word ("kiss") following a silence.</p><p>We\'ll report our findings at <a href="https://osf.io/rvp48/">osf.io/rvp48/</a>.</p><p>Thanks for your help! If you know anyone else who\'s taking part, we\'d appreciate it if you didn\'t explain the purpose to them before they\'ve done the experiment, as it might affect the results.</p><p>If you have any questions, please contact <a href="mailto:Martin.Corley@ed.ac.uk?subject=Disfluency%20Experiment '+short_id+'">Martin Corley.</a></p>',
     on_start: () => {
 	jsPsych.setProgressBar(1);
     }
@@ -324,4 +331,3 @@ const experiment = {
 
   
 jsPsych.run([experiment]);
- 
