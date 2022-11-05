@@ -2,7 +2,7 @@ const jsPsych = initJsPsych({
     show_progress_bar: true,
     auto_update_progress_bar: false,
     on_finish: function() {
-	window.location.assign("https://universityofedinburgh-ppls.sona-systems.com/webstudy_credit.aspx?experiment_id=643&credit_token=2cf60d81805d455c9e65772ee1fecd5d&survey_code="+sona_id);
+	window.location.assign("https://app.prolific.co/submissions/complete?cc=CPHGKUII");
     }
 });
 
@@ -160,7 +160,7 @@ const welcome = {
     type: jsPsychInstructions,
     pages: [`<h1>Important</h1>
              <p>To claim credit for this experiment, click on the <span style="color:orange">orange button</span> on the final screen.</p>
-             <p>Please note down the ID `+short_id+` which you can use to correspond with us about the experiment`,
+             <p>Please note down the ID <strong>`+short_id+`</strong> which you can use to correspond with us about the experiment`,
 	    `<h1>Welcome</h1>
                <div align='center'><img src='img/listen.svg' alt="icons representing headphones, earbuds, and a loudspeaker"/></div>
                <p>In this experiment you will be asked to make judgements about the words that you hear.
