@@ -105,7 +105,7 @@ const practice = [
 //  	     "KG1","KG2","KG3","KG4","KG5","KG6","KG7","KG8"]
 // }
 
-for testing
+// for testing
 const factors = {
     phrase: ["DC1","FC1",],
     target: ["GK3","GK7",
